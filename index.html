@@ -48,9 +48,22 @@ const lg=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){retu
 cfg=lg('cfg',cfg);function fixEx(){const o=JSON.stringify(cfg.ex.map(e=>e.id+e.name));cfg.ex=DOCX.map(([f,n])=>{const e=cfg.ex.find(x=>x.fam==f&&norm(x.name).slice(0,6)==norm(n).slice(0,6));if(e)e.name=n;return e||mkEx(f,n)});return o!=JSON.stringify(cfg.ex.map(e=>e.id+e.name))}
 if(fixEx())try{localStorage.setItem('cfg',JSON.stringify(cfg))}catch(e){}
 lg('ids',[]).forEach(i=>st[i]=lg('s_'+i,null));
+let FBCFG=lg('fb',null);
+try{if(location.hash.startsWith('#fb=')){FBCFG=JSON.parse(atob(decodeURIComponent(location.hash.slice(4))));localStorage.setItem('fb',JSON.stringify(FBCFG));history.replaceState(null,'',location.pathname)}}catch(e){}
+function mkRem(T,ms){let okf=false;const cache={},known={},cl=[],sl=[];let first=true;
+async function poll(){try{const idx=await T.idx();let chC=first,chS=first;
+for(const id of Object.keys(idx)){if(known[id]===idx[id])continue;const j=await T.get(id);if(j){cache[id]=j;known[id]=idx[id];if(id=='config')chC=true;else chS=true}}
+okf=true;first=false;
+if(chC)cl.forEach(f=>f({exists:!!cache.config,data:()=>({j:cache.config})}));
+if(chS)sl.forEach(f=>f({docs:Object.keys(cache).filter(k=>k!='config').map(k=>({id:k,data:()=>({j:cache[k]})}))}))}catch(e){okf=false}updSync()}
+setInterval(poll,ms||10000);
+return{ok:()=>okf,doc:p=>({set:async v=>{const id=p=='config/main'?'config':p.slice(2),t=JSON.parse(v.j)._t||0;await T.put(id,v.j,t);cache[id]=v.j;known[id]=t;okf=true},onSnapshot:f=>{cl.push(f);poll()}}),collection:()=>({onSnapshot:f=>{sl.push(f);poll()}})}}
+function mkSB(o){const u=o.url.replace(/\/+$/,'')+'/rest/v1/rpc/',cle=o.key,h={'Content-Type':'application/json',apikey:o.anon};if(o.anon.startsWith('eyJ'))h.Authorization='Bearer '+o.anon;
+const rpc=async(fn,a)=>{const r=await fetch(u+fn,{method:'POST',headers:h,body:JSON.stringify(a)});if(!r.ok)throw new Error(r.status);const t=await r.text();return t?JSON.parse(t):null};
+return mkRem({idx:async()=>{const a=(await rpc('carnet_idx',{cle}))||[],m={};a.forEach(r=>m[r.id]=r.t);return m},get:id=>rpc('carnet_get',{cle,did:id}),put:(id,j,t)=>rpc('carnet_put',{cle,did:id,doc:j,ts:t})},o.ms)}
 const DIRTY=lg('dirty',{});
 const svDirty=()=>{try{localStorage.setItem('dirty',JSON.stringify(DIRTY))}catch(e){}};
-function updSync(){let e=$('#sync');if(!e){e=document.createElement('div');e.id='sync';e.style.cssText='position:fixed;right:8px;bottom:8px;z-index:8;font-size:13px;padding:4px 10px;border-radius:12px;background:var(--card);color:var(--tx);border:1px solid var(--bd);opacity:.92';document.body.appendChild(e)}const n=Object.keys(DIRTY).length;e.textContent=DB?(n?'🟠 En attente de synchro ('+n+')':'🟢 Synchronisé'):'⚪ Hors ligne : données gardées sur cette tablette'}
+function updSync(){let e=$('#sync');if(!e){e=document.createElement('div');e.id='sync';e.style.cssText='position:fixed;right:8px;bottom:8px;z-index:8;font-size:13px;padding:4px 10px;border-radius:12px;background:var(--card);color:var(--tx);border:1px solid var(--bd);opacity:.92';document.body.appendChild(e)}const n=Object.keys(DIRTY).length;e.textContent=DB&&(!DB.ok||DB.ok())?(n?'🟠 En attente de synchro ('+n+')':'🟢 Synchronisé'):'⚪ Hors ligne : données gardées sur cette tablette'}
 async function push(path,obj){if(!DB)return false;try{await DB.doc(path).set({j:JSON.stringify(obj)});delete DIRTY[path];svDirty();updSync();return true}catch(e){return false}}
 async function put(path,obj,key){obj._t=Date.now();try{localStorage.setItem(key,JSON.stringify(obj))}catch(e){}DIRTY[path]=key;svDirty();updSync();await push(path,obj)}
 const cur=path=>path=='config/main'?cfg:st[path.slice(2)];
@@ -58,7 +71,7 @@ async function flush(){for(const path of Object.keys(DIRTY)){const o=cur(path);i
 function merge(path,key,r){const l=cur(path);if(!l||!l._t||(r._t||0)>l._t){if(path=='config/main')cfg=r;else{st[path.slice(2)]=r;try{localStorage.setItem('ids',JSON.stringify(Object.keys(st)))}catch(e){}}try{localStorage.setItem(key,JSON.stringify(r))}catch(e){}return true}if(l._t>(r._t||0)){DIRTY[path]=key;svDirty();push(path,l)}return false}
 const saveC=()=>put('config/main',cfg,'cfg');
 const saveS=i=>{try{localStorage.setItem('ids',JSON.stringify(Object.keys(st)))}catch(e){};put('s/'+i,st[i],'s_'+i)};
-async function initDB(){if(DB)return;try{const d=await claude.use('db');if(!d)return;DB=d;
+async function initDB(){if(DB)return;try{const d=FBCFG?mkSB(FBCFG):await claude.use('db');if(!d)return;DB=d;
  DB.doc('config/main').onSnapshot(q=>{if(q.exists){if(merge('config/main','cfg',JSON.parse(q.data().j))){if(fixEx())saveC();if(!run)R()}}else{DIRTY['config/main']='cfg';svDirty();flush()}});
  DB.collection('s').onSnapshot(q=>{let ch=0;q.docs.forEach(x=>{if(merge('s/'+x.id,'s_'+x.id,JSON.parse(x.data().j)))ch=1});Object.keys(st).forEach(id=>{if(st[id]&&!q.docs.some(x=>x.id==id)){DIRTY['s/'+id]='s_'+id}});svDirty();flush();if(ch&&!run)R()});flush();updSync()}catch(e){DB=null;updSync()}}
 initDB();setInterval(()=>{if(!DB)initDB();else flush()},20000);window.addEventListener('online',()=>{initDB();flush()});setTimeout(updSync,50);
@@ -225,8 +238,12 @@ function tRe(){return `<div class="card"><h2>🔑 Mon code enseignant</h2><p cla
 <div style="margin:6px 0"><div class="mu">Nouveau code (4 caractères minimum)</div><input id="p1" type="password" inputmode="numeric"></div>
 <div style="margin:6px 0"><div class="mu">Nouveau code, encore une fois</div><input id="p2" type="password" inputmode="numeric"></div>
 <button class="ok" onclick="chPin()">Enregistrer mon nouveau code</button></div>
+${typeof claude==='undefined'?`<div class="card"><h2>🔄 Synchronisation entre tablettes</h2>${FBCFG?`<p>✅ Activée sur cette tablette</p><p class="mu">${esc(FBCFG.url)}</p><button class="g" onclick="fbLink()">Lien pour configurer les autres tablettes</button><button class="ko" onclick="fbOff()">Désactiver</button><textarea id="fbl" readonly style="display:none"></textarea><p class="mu">Ouvre ce lien une fois sur chaque tablette. Garde-le pour toi : il contient la clé secrète.</p>`:`<p class="mu">Colle les informations de ton projet Supabase, puis invente une clé secrète longue que tu gardes pour toi.</p><input id="fu" style="width:100%" placeholder="Project URL : https://xxxx.supabase.co"><input id="fa" style="width:100%;margin-top:6px" placeholder="Clé anon / publishable"><input id="fk" style="width:100%;margin-top:6px" placeholder="Clé secrète de la classe (12 caractères minimum)"><button class="ok" onclick="fbOn()">Activer la synchronisation</button>`}</div>`:''}
 <p class="mu">Le code est un simple verrou pour la classe : il n’est pas chiffré. Ne mets pas un code que tu utilises ailleurs.</p>`}
 function chPin(){const a=$('#p0').value,b=$('#p1').value,c=$('#p2').value;if(a!==cfg.pin)return toast('Code actuel incorrect');if(b.length<4)return toast('Le nouveau code doit faire 4 caractères minimum');if(b!==c)return toast('Les deux nouveaux codes sont différents');cfg.pin=b;saveC();toast('Nouveau code enregistré ✅');R()}
+function fbOn(){const u=$('#fu').value.trim(),a=$('#fa').value.trim(),k=$('#fk').value.trim();if(!/^https:\/\/.+/.test(u))return toast('Adresse invalide : elle commence par https://');if(a.length<20)return toast('Clé « anon / publishable » invalide');if(!/^[A-Za-z0-9_-]{12,}$/.test(k))return toast('Clé secrète : 12 caractères minimum, lettres, chiffres, - ou _ seulement');try{localStorage.setItem('fb',JSON.stringify({type:'sb',url:u,anon:a,key:k}))}catch(e){}location.reload()}
+function fbOff(){if(!cf('Désactiver la synchronisation ?'))return;try{localStorage.removeItem('fb')}catch(e){}location.reload()}
+function fbLink(){const t=$('#fbl');t.style.display='block';t.value=location.origin+location.pathname+'#fb='+encodeURIComponent(btoa(JSON.stringify(FBCFG)));t.select()}
 function tg(i,k){const p=S(i);p.pass[k]=!p.pass[k];saveS(i);R()}
 function tEx(){return cfg.ex.map((e,x)=>`<div class="card"><div class="row"><b>${FAM[e.fam]}</b><b class="grow">${esc(e.name)}</b></div>
 ${e.lv.map((l,n)=>`<details><summary>Niveau ${n+1} – ${esc(l.t)}</summary><input style="width:100%" placeholder="Titre" value="${esc(l.t)}" onchange="cfg.ex[${x}].lv[${n}].t=this.value;saveC()"><input style="width:100%;margin-top:4px" placeholder="Lien vidéo (.mp4 direct, ou lien web)" value="${esc(l.v)}" onchange="cfg.ex[${x}].lv[${n}].v=this.value;saveC()"><textarea placeholder="Critères de réalisation" onchange="cfg.ex[${x}].lv[${n}].c=this.value;saveC()">${esc(l.c)}</textarea><textarea placeholder="Critères de réussite" onchange="cfg.ex[${x}].lv[${n}].r=this.value;saveC()">${esc(l.r)}</textarea></details>`).join('')}</div>`).join('')}
