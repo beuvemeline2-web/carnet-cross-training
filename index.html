@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap">
+<title>Gym 6ème – Ma progression</title>
+<style>
+:root{--bg:#f4f8fb;--card:#fff;--ink:#26334d;--mut:#66758f;--main:#2f7f86;--acc:#f1c75b;--ok:#3fa578;--line:#dbe6ee;--sh:rgba(38,51,77,.10);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a3a;--card:#1f2b5c;--ink:#f2f5ff;--mut:#aab6e0;--line:#34428a;--sh:rgba(0,0,0,.4)}}
+:root[data-theme="dark"]{--bg:#121a3a;--card:#1f2b5c;--ink:#f2f5ff;--mut:#aab6e0;--line:#34428a;--sh:rgba(0,0,0,.4)}
+*{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;color:var(--ink);font:19px/1.45 "Fredoka","Trebuchet MS","Segoe UI",system-ui,sans-serif;background:var(--bg)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background:var(--bg)}}
+:root[data-theme="dark"] body{background:var(--bg)}
+main{max-width:980px;margin:0 auto;padding:16px}
+h1{font-size:1.85rem;margin:.2em 0;font-weight:600}
+.hero{background:linear-gradient(90deg,#dff0fb,#ece6fb);color:#26334d;padding:14px 22px;border-radius:22px;border:2px solid var(--line)}
+button,input,textarea{font:inherit;color:inherit}
+.btn{background:var(--main);color:#fff;border:0;border-bottom:3px solid rgba(0,0,0,.18);border-radius:16px;padding:12px 22px;cursor:pointer;min-height:54px;font-weight:500}
+.btn:active{transform:translateY(2px);border-bottom-width:1px}
+.btn.alt{background:var(--card);color:var(--main);border:2px solid var(--main);border-bottom-width:3px}
+.btn.acc{background:var(--acc);color:#3a2a00;font-size:1.1rem}
+.btn.sm{padding:6px 14px;min-height:42px;font-size:.9rem}
+.btn:focus-visible,.tile:focus-visible,.step:focus-visible,input:focus-visible{outline:4px solid #1c9cf0;outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;margin-top:16px}
+.tile{background:var(--card);border:2px solid var(--line);border-top:7px solid var(--c,var(--main));border-radius:20px;padding:16px;text-align:left;cursor:pointer;min-height:96px;box-shadow:0 4px 12px var(--sh);transition:transform .12s}
+.tile:active{transform:translateY(2px)}
+.tile b{display:block;font-size:1.15rem;font-weight:600}
+
+
+
+.bar{display:flex;gap:6px;margin-top:10px}.bar i{flex:1;height:14px;border-radius:7px;background:var(--line)}.bar i.on{background:var(--ok)}.bar i.cur{background:var(--acc)}
+.card{background:var(--card);border:2px solid var(--line);border-top:7px solid var(--c,var(--line));border-radius:22px;padding:18px;margin-top:16px;box-shadow:0 4px 12px var(--sh)}
+.ladder{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.step{display:flex;align-items:center;gap:14px;text-align:left;width:100%;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 18px;cursor:pointer;min-height:76px;box-shadow:0 3px 8px var(--sh);color:var(--ink)}
+.step .n{flex:none;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:1.2rem;background:var(--line)}
+.step.ok{border-color:var(--ok)}.step.ok .n{background:var(--ok);color:#fff}
+.step.cur{border-color:var(--c,var(--acc));border-width:3px}.step.cur .n{background:var(--c,var(--acc));color:#fff}
+.step.lock{opacity:.55;cursor:not-allowed;box-shadow:none}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+@media(max-width:640px){.two{grid-template-columns:1fr}}
+.media{width:100%;min-height:200px;border-radius:20px;background:var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mut);text-align:center;padding:8px;overflow:hidden}
+.media img,.media video{display:block;width:100%;height:auto;max-height:55vh;min-height:180px;object-fit:contain;border-radius:14px;background:#000}
+.vh{background:#fff3cd;color:#5a4300;border-radius:12px;padding:8px 12px;font-size:.85rem;margin:8px 0 0}
+.chk{display:flex;gap:14px;align-items:center;padding:12px 14px;margin-top:8px;border-radius:16px;background:color-mix(in srgb,var(--c,var(--ok)) 8%,transparent);cursor:pointer}
+.chk input{width:32px;height:32px;accent-color:var(--ok);flex:none}
+.tip{padding:8px 12px;margin:8px 0;border-radius:12px;background:color-mix(in srgb,var(--c,var(--acc)) 9%,transparent);border-left:5px solid var(--c,var(--acc))}
+.done{color:var(--ok);font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(20,20,60,.65);display:grid;place-items:center;padding:16px;z-index:9}
+.modal>div{background:var(--card);border-radius:22px;padding:20px;width:min(360px,100%);border:2px solid var(--line)}
+.pin{font-size:2rem;letter-spacing:.4em;text-align:center;min-height:2.6rem}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.pad .btn{padding:12px}
+input[type=text],input[type=password],textarea{width:100%;padding:10px 12px;border:3px solid var(--line);border-radius:14px;background:var(--bg);margin:4px 0 10px}
+.err{color:#d6336c;min-height:1.4em}.mut{color:var(--mut);font-size:.9rem}
+table{width:100%;border-collapse:collapse}td,th{padding:6px;border-bottom:2px solid var(--line);text-align:center;font-size:.9rem}td:first-child,th:first-child{text-align:left}
+.pm{display:inline-flex;align-items:center;gap:4px}.pm button{width:36px;height:36px;border-radius:50%;border:3px solid var(--main);background:var(--card);color:var(--main);cursor:pointer;font-size:1.2rem;font-weight:700}
+.ico{width:92px;height:92px;border-radius:26px;display:block;margin-bottom:8px;background:color-mix(in srgb,var(--c,var(--main)) 16%,var(--card));border:3px solid color-mix(in srgb,var(--c,var(--main)) 40%,var(--card));overflow:hidden}
+.ico svg{width:100%;height:100%;display:block}
+.ico .k,.ico .t,.ico .p{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ico .k{stroke:#f2c29b;stroke-width:5}.ico .t{stroke:var(--c);stroke-width:10}.ico .p{stroke:#31406b;stroke-width:10}
+.ico .sk{fill:#f2c29b}.ico .hr{fill:#5a3a22}.ico .fl{fill:var(--line)}.ico .wd{fill:#c9955a}
+.ico .ar{fill:none;stroke:var(--c);opacity:.55;stroke-width:2.5;stroke-dasharray:3 3;stroke-linecap:round}
+.fold{font-size:3rem;display:block;line-height:1}
+select{width:100%;padding:10px 12px;border:3px solid var(--line);border-radius:14px;background:var(--bg);margin:4px 0 10px;color:var(--ink)}
+</style></head><body><main id="app">Chargement…</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
+<script>
+const SB_URL='https://rviohcndyypvofgixhzy.supabase.co',SB_KEY='sb_publishable_3wO5FA-Dx0_nUCy4tTcJMA_MA684HAX';
+</script>
+<script>
+const FAM=[
+{n:'Rotation avant',l:['Roulade avant sur plan incliné','Roulade avant sur le sol','Roulade avant sur-élevée avec tremplin','Salto avant tremplin sur tapis']},
+{n:'Rotation arrière',l:['Roulade arrière sur plan incliné','Roulade arrière à croupi','Roulade arrière debout','Roulade arrière jambes tendues']},
+{n:'Renversement',l:['Renversement aligné, pieds sur une caisse','Passage du gainage à l’ATR avec 2 pareurs','ATR avec 2 pareurs','ATR seul']},
+{n:'Saut de module',l:['Saut sur le côté','Saut au-dessus avec pause sur le module à croupi','Saut de franchissement pieds devant','Saut de franchissement de chat, mains en premier']},
+{n:'Élément gymnique',l:['Saut droit','Saut demi-tour','Saut tour','Saut tour et demi']},
+{n:'Rotation transversale',l:['Poser la main sur le module et franchir la rivière','Roue sur un cercle, sans alignement','Roue sur une ligne','Roue 1 main']}];
+const HD=(x,y,f)=>`<circle class="hr" cx="${x}" cy="${y}" r="7.2"/><circle class="sk" cx="${x+f*1.3}" cy="${y+1}" r="6"/>`;
+const FL='<rect class="fl" x="4" y="70" width="72" height="6" rx="3"/>';
+const ROLL=`<path class="ar" d="M16 34Q40 8 66 30M66 30l-8-1M66 30l-1 8"/><path class="k" d="M34 52L28 66"/><path class="t" d="M36 50Q50 30 62 50"/><path class="k" d="M62 52L58 64L44 66"/><path class="p" d="M62 50L60 58"/>${HD(30,54,-1)}`;
+const SVG=[
+`<svg viewBox="0 0 80 80">${FL}${ROLL}</svg>`,
+`<svg viewBox="0 0 80 80">${FL}<g transform="translate(80 0) scale(-1 1)">${ROLL}</g></svg>`,
+`<svg viewBox="0 0 80 80">${FL}<path class="k" d="M40 50L33 70M40 50L47 70"/><path class="t" d="M40 50L40 28"/><path class="p" d="M40 28L40 20"/><path class="k" d="M39 20L38 6M41 20L42 6"/>${HD(40,58,0)}</svg>`,
+`<svg viewBox="0 0 80 80">${FL}<rect class="wd" x="22" y="48" width="38" height="22" rx="3"/><rect x="22" y="48" width="38" height="6" rx="3" fill="#2f7f86"/><path class="k" d="M52 34L64 46"/><path class="k" d="M34 36L20 26M34 36L22 46"/><path class="t" d="M52 33L36 36"/><path class="p" d="M36 36L30 32M36 36L29 42"/>${HD(58,29,1)}</svg>`,
+`<svg viewBox="0 0 80 80">${FL}<path class="k" d="M40 26L22 14M40 26L58 14"/><path class="k" d="M40 44L18 62M40 44L62 62"/><path class="t" d="M40 26L40 44"/><path class="p" d="M40 44L32 52M40 44L48 52"/>${HD(40,16,0)}</svg>`,
+`<svg viewBox="0 0 80 80">${FL}<path class="ar" d="M10 50Q14 18 44 8M44 8l-8 0M44 8l-4 7"/><path class="k" d="M40 52L30 70M40 52L50 70"/><path class="k" d="M40 34L22 10M40 34L58 14"/><path class="t" d="M40 52L40 34"/><path class="p" d="M40 34L33 24M40 34L50 24"/>${HD(36,60,0)}</svg>`];
+const ICO=[0,1,2,3,4,5];
+const DEF={'0_0':{tips:['Menton rentré sur la poitrine','Mains posées au sol, écartées largeur d’épaules','Pousse avec les jambes et reste groupé'],crit:['Je me roule en rond, sans poser la tête au sol','Je me relève sans l’aide des mains','Je reste groupé du début à la fin']}};
+let db=null,asset=null,S={students:[],prog:{},levels:{},pin:undefined},V={v:'home'},pin='',cb=null,msg='';
+let CK={};try{CK=JSON.parse(localStorage.getItem('gym6ck'))||{}}catch(e){}
+const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const P=id=>S.prog[id]||[0,0,0,0,0,0];
+function C(f,l){const d=DEF[f+'_'+l]||{},o=S.levels[f+'_'+l]||{};return{t:o.t||FAM[f].l[l],tips:o.tips||d.tips||['Conseil 1 à renseigner','Conseil 2 à renseigner','Conseil 3 à renseigner'],crit:o.crit||d.crit||['Critère 1 à renseigner','Critère 2 à renseigner','Critère 3 à renseigner'],m:o.m,mt:o.mt}}
+function go(v,x){V=Object.assign({v},x||{});msg='';render()}
+function safe(){const e=document.activeElement;if(V.v=='tedit'||(e&&e.tagName=='INPUT'&&e.type!='checkbox'))return;render()}
+function render(){const a=document.getElementById('app');
+if(!db){a.innerHTML=`<h1>Gym 6ème</h1><p>${ERR||'Connexion à la base de la classe…'}</p>`;return}
+if(S.pin===undefined){a.innerHTML=ERR?`<h1>Gym 6ème</h1><p>${esc(ERR)}</p>`:'Chargement…';return}
+if(S.pin===null){a.innerHTML=`<h1>Bienvenue, professeur</h1><p>Choisis un code à 4 chiffres : il servira à valider les niveaux.</p><input id="np" type="password" inputmode="numeric" maxlength="4" placeholder="Code à 4 chiffres"><button class="btn" onclick="setPin()">Enregistrer le code</button><p class="err">${msg}</p>`;return}
+({home,cls,student,family,level,teacher,tedit})[V.v]()}
+async function w(fn){try{await fn()}catch(e){alert('Enregistrement impossible : '+(e&&e.message||e)+'\nVérifie la connexion internet et la configuration de la base.')}}
+function setPin(){const p=document.getElementById('np').value;if(!/^\d{4}$/.test(p)){msg='Entrez exactement 4 chiffres.';return render()}w(()=>db.doc('config/main').set({pin:p}))}
+const COL=['#e8744f','#d9628f','#8470d6','#4a97d1','#3fa578','#d89a2b'];const ic=i=>`<span class="ico" style="--c:${COL[i]}">${SVG[i]}</span>`;
+const CLS=['6A','6B'],CC={'6A':'#4a97d1','6B':'#3fa578','Autres':'#8a97ad'};
+const clsOf=s=>CLS.includes(s.cls)?s.cls:'Autres';
+function home(){const g=[...CLS,...(S.students.some(x=>clsOf(x)=='Autres')?['Autres']:[])];
+document.getElementById('app').innerHTML=`<div class="top"><h1 class="hero">🤸 Gym – Choisis ta classe 🏅</h1><button class="btn alt sm" onclick="ask(()=>go('teacher'))">Espace professeur</button></div>
+<div class="grid">${g.map(c=>`<button class="tile" style="--c:${CC[c]}" onclick="go('cls',{c:'${c}'})"><span class="fold">📁</span><b>${c}</b><span class="mut">${S.students.filter(x=>clsOf(x)==c).length} élève(s)</span></button>`).join('')}</div>`}
+function cls(){const l=S.students.filter(x=>clsOf(x)==V.c);
+document.getElementById('app').innerHTML=`<button class="btn alt sm" onclick="go('home')">← Les classes</button><h1 style="color:${CC[V.c]||'inherit'}">📁 ${esc(V.c)} – Qui es-tu ?</h1>
+${l.length?`<div class="grid">${l.map(s=>`<button class="tile" style="--c:${CC[V.c]}" onclick="go('student',{id:'${esc(s.id)}'})"><b>👤 ${esc(s.name)}</b></button>`).join('')}</div>`:'<div class="card">Aucun élève dans cette classe pour le moment.</div>'}`}
+function student(){const s=S.students.find(x=>x.id==V.id);if(!s)return go('home');const p=P(s.id);
+document.getElementById('app').innerHTML=`<button class="btn alt sm" onclick="go('cls',{c:'${clsOf(s)}'})">← Ma classe</button><h1>👋 Salut ${esc(s.name)} !</h1><p class="mut">Choisis une famille pour voir ta progression.</p>
+<div class="grid">${FAM.map((f,i)=>`<button class="tile" style="--c:${COL[i]}" onclick="go('family',{id:'${esc(s.id)}',f:${i}})">${ic(i)}<b>${f.n}</b><span class="mut">${p[i]>=4?'Famille terminée ✓':'Niveau '+(p[i]+1)+' / 4'}</span><span class="bar">${[0,1,2,3].map(j=>`<i class="${j<p[i]?'on':j==p[i]?'cur':''}"></i>`).join('')}</span></button>`).join('')}</div>`}
+function family(){const s=S.students.find(x=>x.id==V.id);if(!s)return go('home');const p=P(s.id)[V.f],F=FAM[V.f];
+document.getElementById('app').innerHTML=`<button class="btn alt sm" onclick="go('student',{id:'${esc(s.id)}'})">← Mes familles</button>
+<div style="display:flex;align-items:center;gap:14px;margin-top:10px;--c:${COL[V.f]}">${ic(V.f)}<h1 style="color:${COL[V.f]}">${F.n}</h1></div><p class="mut">Monte l’échelle niveau par niveau. Le niveau suivant s’ouvre quand le professeur te valide.</p>
+<div class="ladder" style="--c:${COL[V.f]}">${[0,1,2,3].map(l=>{const st=l<p?'ok':l==p?'cur':'lock';return`<button class="step ${st}" ${st=='lock'?'disabled':`onclick="go('level',{id:'${esc(s.id)}',f:${V.f},l:${l}})"`}><span class="n">${st=='ok'?'✓':st=='lock'?'🔒':l+1}</span><span><b>Niveau ${l+1}</b><br>${esc(C(V.f,l).t)}</span></button>`}).join('')}</div>`}
+function level(){const s=S.students.find(x=>x.id==V.id);if(!s)return go('home');const p=P(s.id)[V.f];if(V.l>p)return go('family',{id:s.id,f:V.f});
+const c=C(V.f,V.l),k=s.id+'_'+V.f+'_'+V.l,ck=CK[k]||[0,0,0],all=ck.every(Boolean);
+const med=c.m?(c.mt&&c.mt.startsWith('image')?`<img src="${esc(c.m)}" alt="Décomposition du mouvement">`:`<video src="${esc(c.m)}" controls playsinline preload="metadata" onloadedmetadata="vchk(this)" onerror="vchk(this,1)"></video>`):'Vidéo à venir';
+document.getElementById('app').innerHTML=`<button class="btn alt sm" onclick="go('family',{id:'${esc(s.id)}',f:${V.f}})">← ${FAM[V.f].n}</button>
+<div class="card" style="--c:${COL[V.f]}"><h2>Niveau ${V.l+1} : ${esc(c.t)}</h2>
+<div class="two"><div class="media">${med}</div><div><h3>Ce qu’il faut faire pour réussir :</h3>${c.tips.map(t=>`<div class="tip">${esc(t)}</div>`).join('')}</div></div>
+<h3>J’ai réussi quand :</h3>${c.crit.map((t,i)=>`<label class="chk"><input type="checkbox" ${ck[i]?'checked':''} ${V.l<p?'disabled':''} onchange="tick('${esc(k)}',${i},this.checked)"><span>${esc(t)}</span></label>`).join('')}
+<div style="margin-top:14px">${V.l<p?'<span class="done">✓ Niveau validé par le professeur</span>':all?`<button class="btn acc" onclick="ask(()=>validate('${esc(s.id)}',${V.f}),'Code du professeur')">✋ J’appelle le professeur</button>`:'<span class="mut">Coche les 3 critères pour appeler le professeur.</span>'}</div></div>`}
+function vchk(v,e){const b=v.parentNode;if(!(e||!v.videoWidth)||b.querySelector('.vh'))return;
+b.insertAdjacentHTML('beforeend',`<p class="vh">${e?'La vidéo ne se charge pas sur cet appareil.':'Le son passe mais pas l’image : format vidéo non géré par cet appareil (souvent HEVC / H.265).'} Convertis-la en MP4 H.264 (ex. HandBrake ou Clipchamp, réglage standard 720p) puis redépose-la. <a href="${esc(v.currentSrc||v.src)}" target="_blank" rel="noopener">Ouvrir la vidéo dans un nouvel onglet</a></p>`)}
+function tick(k,i,v){const c=CK[k]||(CK[k]=[0,0,0]);c[i]=v?1:0;try{localStorage.setItem('gym6ck',JSON.stringify(CK))}catch(e){}level()}
+function setProg(id,f,n){const p=[...P(id)];p[f]=Math.max(0,Math.min(4,n));S.prog[id]=p;w(()=>db.doc('progress/'+id).set({p}))}
+function validate(id,f){setProg(id,f,P(id)[f]+1);go('family',{id,f})}
+function ask(fn,t){cb=fn;pin='';msg='';modal(t)}
+function modal(t){t=t||'Code du professeur';let m=document.getElementById('md');if(!m){m=document.createElement('div');m.id='md';m.className='modal';document.body.appendChild(m)}m.dataset.t=t;
+m.innerHTML=`<div><h2>${t}</h2><div class="pin">${'●'.repeat(pin.length)}</div><div class="err">${msg}</div><div class="pad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="btn alt" onclick="key('${n}')">${n}</button>`).join('')}<button class="btn alt" onclick="closeM()">Annuler</button><button class="btn alt" onclick="key('0')">0</button><button class="btn alt" onclick="pin=pin.slice(0,-1);modal(document.getElementById('md').dataset.t)">⌫</button></div></div>`}
+function closeM(){const m=document.getElementById('md');if(m)m.remove()}
+function key(n){const t=(document.getElementById('md')||{dataset:{}}).dataset.t;if(pin.length>=4)return;pin+=n;if(pin.length==4){if(pin===S.pin){const f=cb;closeM();f&&f()}else{pin='';msg='Code incorrect.';modal(t)}}else modal(t)}
+function TB(l){return`<div style="overflow-x:auto"><table><tr><th>Élève</th>${FAM.map((f,i)=>`<th>${i+1}. ${f.n}</th>`).join('')}<th></th></tr>${l.map(s=>`<tr><td>${esc(s.name)}</td>${FAM.map((f,i)=>`<td><span class="pm"><button aria-label="Retirer un niveau" onclick="setProg('${esc(s.id)}',${i},${P(s.id)[i]-1});teacher()">−</button><b>${P(s.id)[i]}</b><button aria-label="Valider un niveau" onclick="setProg('${esc(s.id)}',${i},${P(s.id)[i]+1});teacher()">+</button></span></td>`).join('')}<td><button class="btn alt sm" onclick="mvS('${esc(s.id)}')">Changer de classe</button> <button class="btn alt sm" onclick="delS('${esc(s.id)}')">Supprimer</button></td></tr>`).join('')}</table></div>`}
+function mvS(id){const s=S.students.find(x=>x.id==id);if(!s)return;const c=clsOf(s)=='6A'?'6B':'6A';w(()=>db.doc('students/'+id).set({name:s.name,cls:c}))}
+function teacher(){document.getElementById('app').innerHTML=`<div class="top"><button class="btn alt sm" onclick="go('home')">← Retour</button><h1>Espace professeur</h1></div>
+<div class="card"><h2>Validation des niveaux</h2><p class="mut">Niveaux validés par famille (0 à 4). Les changements apparaissent sur toutes les tablettes.</p>
+${[...CLS,'Autres'].map(c=>{const l=S.students.filter(x=>clsOf(x)==c);return l.length||c!='Autres'?`<h3>${c}</h3>`+(l.length?TB(l):'<p class="mut">Aucun élève.</p>'):''}).join('')}</div>
+<div class="card"><h2>Élèves de la classe</h2><p class="mut">RGPD : saisis uniquement des prénoms (ou prénom + initiale), sans nom de famille ni photo d’élève.</p>
+<select id="nc" aria-label="Classe"><option>6A</option><option>6B</option></select><input id="ns" type="text" placeholder="Prénom (plusieurs possibles, séparés par une virgule)" onkeydown="if(event.key=='Enter')addS()"><button class="btn sm" onclick="addS()">Ajouter</button></div>
+<div class="card"><h2>Contenu des niveaux</h2><div class="grid">${FAM.map((f,i)=>`<button class="tile" style="--c:${COL[i]}" onclick="go('tedit',{f:${i},l:0})">${ic(i)}<b>${f.n}</b><span class="mut">Titres, conseils, vidéos</span></button>`).join('')}</div></div>
+<div class="card"><button class="btn alt sm" onclick="chPin()">Changer le code</button></div>`}
+function addS(){const el=document.getElementById('ns'),c=document.getElementById('nc').value;const n=el.value.split(/[\n,;]/).map(x=>x.trim()).filter(Boolean);el.value='';w(async()=>{for(const x of n)await db.collection('students').add({name:x.slice(0,30),cls:c})})}
+function delS(id){if(!confirm('Supprimer cet élève et sa progression ?'))return;w(async()=>{await db.doc('students/'+id).delete();await db.doc('progress/'+id).delete()})}
+function chPin(){const p=prompt('Nouveau code à 4 chiffres');if(/^\d{4}$/.test(p||'')){w(()=>db.doc('config/main').set({pin:p}));alert('Code modifié.')}else if(p!==null)alert('Il faut 4 chiffres.')}
+function tedit(){const{f,l}=V,c=C(f,l);const med=c.m?(c.mt&&c.mt.startsWith('image')?`<img src="${esc(c.m)}">`:`<video src="${esc(c.m)}" controls playsinline onloadedmetadata="vchk(this)" onerror="vchk(this,1)"></video>`):'Aucun média';
+document.getElementById('app').innerHTML=`<div class="top"><button class="btn alt sm" onclick="go('teacher')">← Retour</button><h1>${FAM[f].n}</h1></div>
+<div class="ladder" style="flex-direction:row;flex-wrap:wrap">${[0,1,2,3].map(i=>`<button class="step ${i==l?'cur':''}" style="flex:1;min-width:120px;justify-content:center" onclick="go('tedit',{f:${f},l:${i}})">Niveau ${i+1}</button>`).join('')}</div>
+<div class="card"><label>Titre<input id="et" type="text" value="${esc(c.t)}"></label>
+${c.tips.map((t,i)=>`<label>Conseil ${i+1}<input class="tp" type="text" value="${esc(t)}"></label>`).join('')}
+${c.crit.map((t,i)=>`<label>Critère de réussite ${i+1}<input class="cr" type="text" value="${esc(t)}"></label>`).join('')}
+<div class="media">${med}</div><p class="mut">Vidéo MP4 (H.264), 50 Mo maximum : filme court (5 à 10 s). Elle sera visible sur toutes les tablettes.</p>
+<label class="btn alt sm" style="display:inline-block">Ajouter une vidéo ou une image<input type="file" accept="video/mp4,video/quicktime,video/*,image/*" hidden onchange="upl(this.files[0])"></label> <button class="btn alt sm" onclick="saveC({m:null,mt:null})">Retirer le média</button>
+<p><button class="btn" onclick="saveC()">Enregistrer ce niveau</button></p></div>`}
+function saveC(extra){const o=C(V.f,V.l),g=s=>[...document.querySelectorAll(s)].map(e=>e.value.trim());const d=Object.assign({t:document.getElementById('et').value.trim(),tips:g('.tp'),crit:g('.cr'),m:o.m||null,mt:o.mt||null},extra||{});S.levels[V.f+'_'+V.l]=d;w(()=>db.doc('levels/'+V.f+'_'+V.l).set(d)).then(()=>{if(extra)tedit();else alert('Niveau enregistré.')})}
+function okVid(f){return new Promise(r=>{if(!f.type.startsWith('video')&&!/\.(mp4|mov|m4v)$/i.test(f.name))return r(true);const v=document.createElement('video'),u=URL.createObjectURL(f);const end=x=>{URL.revokeObjectURL(u);r(x)};v.muted=true;v.preload='metadata';v.onloadedmetadata=()=>end(v.videoWidth>0);v.onerror=()=>end(false);setTimeout(()=>end(true),8000);v.src=u})}
+async function upl(f){if(!f)return;if(!(await okVid(f))){alert('Cette vidéo n’a pas d’image lisible sur cet appareil (format HEVC / H.265 probable). Convertis-la en MP4 H.264 puis redépose-la.');return}if(!asset){alert('Dépôt de fichiers indisponible.');return}
+try{const r=await asset.upload(f);const o=C(V.f,V.l);const d={t:document.getElementById('et').value.trim(),tips:[...document.querySelectorAll('.tp')].map(e=>e.value.trim()),crit:[...document.querySelectorAll('.cr')].map(e=>e.value.trim()),m:r.id,mt:r.contentType||f.type};S.levels[V.f+'_'+V.l]=d;await db.doc('levels/'+V.f+'_'+V.l).set(d);tedit()}catch(e){alert('Fichier refusé ('+(e&&(e.message||e.code)||'erreur')+'). Vérifie le format (MP4 conseillé) et la taille (20 Mo max).')}}
+let ERR='',sb,LST=[];
+function mkDB(){
+const refresh=()=>LST.forEach(f=>f());
+sb.channel('kv').on('postgres_changes',{event:'*',schema:'public',table:'kv'},refresh).subscribe();
+setInterval(refresh,10000);
+const reg=f=>{LST.push(f);f()};
+return{
+doc:p=>({
+async set(d){const{error}=await sb.from('kv').upsert({path:p,data:d});if(error)throw error;refresh()},
+async delete(){const{error}=await sb.from('kv').delete().eq('path',p);if(error)throw error;refresh()},
+onSnapshot(cb,er){reg(async()=>{const{data,error}=await sb.from('kv').select('data').eq('path',p).maybeSingle();if(error){er&&er(error);return}cb({exists:!!data,data:()=>data&&data.data})})}}),
+collection:n=>({
+async add(d){const id=Math.random().toString(36).slice(2,9)+Date.now().toString(36);const{error}=await sb.from('kv').upsert({path:n+'/'+id,data:d});if(error)throw error;refresh()},
+onSnapshot(cb,er){reg(async()=>{const{data,error}=await sb.from('kv').select('path,data').like('path',n+'/%');if(error){er&&er(error);return}cb({docs:data.map(r=>({id:r.path.slice(n.length+1),data:()=>r.data}))})})}})}}
+function mkAsset(){return{async upload(f){const ext=((f.name.split('.').pop()||'bin')+'').toLowerCase().replace(/[^a-z0-9]/g,'');const name=Date.now()+'_'+Math.random().toString(36).slice(2,8)+'.'+ext;const{error}=await sb.storage.from('media').upload(name,f,{contentType:f.type||undefined});if(error)throw error;return{id:sb.storage.from('media').getPublicUrl(name).data.publicUrl,contentType:f.type}}}}
+function sub(path,fn){let last='';db.collection(path).onSnapshot(s=>{const g=JSON.stringify(s.docs.map(d=>[d.id,d.data()]));if(g===last)return;last=g;fn(s);safe()},e=>console.error(e))}
+(async()=>{
+if(!/^https:\/\//.test(SB_URL)||!window.supabase){ERR='Configuration manquante : renseigne SB_URL et SB_KEY au début du fichier index.html.';render();return}
+sb=supabase.createClient(SB_URL,SB_KEY);db=mkDB();asset=mkAsset();render();
+let lp='?';db.doc('config/main').onSnapshot(s=>{const p=s.exists?s.data().pin:null;if(p===lp)return;lp=p;ERR='';S.pin=p;safe()},e=>{ERR='Impossible de lire la base : '+((e&&(e.message||e.code))||'erreur')+'. Vérifie que le script SQL a bien été exécuté dans Supabase et que la clé est correcte.';safe()});
+sub('students',s=>{S.students=s.docs.map(d=>({id:d.id,name:d.data().name,cls:d.data().cls})).sort((a,b)=>a.name.localeCompare(b.name,'fr'))});
+sub('progress',s=>{S.prog={};s.docs.forEach(d=>S.prog[d.id]=d.data().p)});
+sub('levels',s=>{S.levels={};s.docs.forEach(d=>S.levels[d.id]=d.data())});
+})();
+</script></body></html>
